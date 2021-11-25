@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'productowner',
     'products',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -77,8 +78,11 @@ WSGI_APPLICATION = 'lojaparatudo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'lojaparatudo',
+        'USER': 'postgres',
+        'PASSWORD': '123456',
+        'HOST': 'localhost'
     }
 }
 
@@ -131,3 +135,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS =  [
     os.path.join(BASE_DIR, 'lojaparatudo/static')
 ]
+
+#media 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

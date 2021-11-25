@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto</title>
+
+    <link rel="stylesheet" href="{% static 'css/product_page.css' %}">
+</head>
+<body>
+      <section class="">
+        
+        <div style="display: flex;" class="container">
+          <input style="height: 50%; margin-right: 2vw;" type="button" value="<--" onclick="history.go(-1)">
+          <div class="col-3 text--center">
+            <img src="{{ product.photo.url }}" alt="" class="details-img--ball" />
+          </div>
+          <div class="col-7 details">
+            <h1>Bom dia, {{ user.username }}</h1>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p>Quem está vendendo esse produto é o usuário {{ product.product_owner }}.</p>
+          </div>
+        </div>
+      </section>
+
+      <header class="bg-image">
+        <div class="container">
+          <h1>{{ product.product_resume }}</h1>
+          <h2>{{ product.comment1 }}</h2>
+          <a href="#" class="btn btn-transparent">Compre agora</a>
+          <h2>Por apenas R${{ product.price }}</h2>
+        </div>
+      </header>
+      
+      <section class="section--primary--alt">
+        <div class="container">
+          <h3>{{ product.comment2 }}</h3>
+          <p>{{ product.product_informations }}</p>
+        </div>
+      </section>
+      
+      <section class="section--primary--alt bg-image bg-image-2">
+        <div class="container text--center">
+          <h3>Razões para comprar esse produto</h3>
+          <div class="col-5 text--left">
+            <ul>
+              <li>{{ product.reasons_to_buy }}</li>
+              <li>Its awesome</li>
+              <li>It makes you happy</li>
+              <li>It brings world peace</li>
+              <li>Its free!</li>
+            </ul>
+          </div>
+          <div class="col-5 text--left">
+            <ul>
+              <li>Its the best</li>
+              <li>Its awesome</li>
+              <li>It makes you happy</li>
+              <li>It brings world peace</li>
+              <li>Its free!</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      
+      <section class="text--center">
+        <div class="container">
+          <h3>Porque ainda está lendo?</h3>
+          <a href="#" class="btn">Compre agora!</a>
+        </div>
+      </section>
+      
+      <footer>
+        <div class="container">
+          <ul>
+            <h3>Para entrar em contato: {{ product.product_owner.email }}</h3>
+          </ul>
+          <p>&copy; 2021 oDOGB. Todos os direitos reservados.</p>
+        </div>
+      </footer>
+</body>
+</html>
+
+
+
