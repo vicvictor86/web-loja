@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
+from .models import Client
 
 def create_user(request):
     if request.method == 'POST':
@@ -29,7 +30,9 @@ def create_user(request):
             return redirect('create_user')
             
         user = User.objects.create_user(username=name, email=email, password=password)
+        client = Client.objects.create(client_id=user.id, fund=100)
         user.save()
+        client.save()
         #messages.success(request, 'Cadastro realizado com sucesso')
         return redirect('index')
         
@@ -44,15 +47,23 @@ def login(request):
             return redirect('login')
         print(email, password)
         if User.objects.filter(email=email).exists():
+            
+            client_objetc = User.objects.filter(email=email)
             name = User.objects.filter(email=email).values_list('username', flat=True).get()
             user = auth.authenticate(request, username=name, password=password)
             if user is not None:
+                
                 auth.login(request, user)
                 #messages.success(request, 'Login realizado com sucesso')
                 return redirect('index')
             #else:
                 #messages.error(request, 'Usuário ou senha incorreto, por favor tente novamente')
     return render(request, 'users/login.html')
+
+def logout(request):
+    """Realiza o logout"""
+    auth.logout(request)
+    return redirect('index')
 
 def empty(campo):
     return not campo.strip()

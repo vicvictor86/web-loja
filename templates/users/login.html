@@ -2,6 +2,7 @@
 <div class="contact-area section-padding-0-80">
     <div class="container">
         <div class="row">
+            <a href="http://localhost:8000/">Voltar</a>
             <div class="col-12">
                 <div class="section-heading">
                     <h2>Login</h2>
@@ -37,6 +38,6 @@
 <script>
     function exibirCriarConta()
     {
-         location.href = "{% url 'login' %}";
+        location.href = "{% url 'create_user' %}";
     } 
     </script>

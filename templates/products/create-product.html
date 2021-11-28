@@ -34,7 +34,7 @@
                         <input type="text" class="form-control" name="product_information" required>
                     </div>
                     <div class="col-12 col-lg-3">
-                        <label for="file"><b>Razões para comprar</b></label>
+                        <label for="file"><b>Razões para comprar(Limite 10)</b></label>
                         
                         <input type="button" onclick="AddInput()" value="Clique Aqui" />
                         <div id="divForm">
@@ -57,23 +57,24 @@
 <script>
     var CountProds = 1;
     function AddInput() {
-        h = CountProds;
-        var form = document.getElementById("divForm");
-        var input = document.createElement("INPUT");
-        var div = document.createElement("div");
+        if(CountProds < 10){
+            h = CountProds;
+            var form = document.getElementById("divForm");
+            var input = document.createElement("INPUT");
+            var div = document.createElement("div");
+            
+            input.setAttribute("type", "text");
+            input.setAttribute("id", "reasons_to_buy" + h);
+            input.setAttribute("name", "reasons_to_buy" + h);
+            input.setAttribute("required", "");
         
-        input.setAttribute("type", "text");
-        input.setAttribute("id", "reasons_to_buy" + h);
-        input.setAttribute("name", "reasons_to_buy" + h);
-        input.setAttribute("required", "");
-    
-        div.setAttribute("id", "ref" + h);
-        div.setAttribute("name", "ref" + h);
-    
-        form.appendChild(div)
-        div.appendChild(input);
-        CountProds++;
-    
+            div.setAttribute("id", "ref" + h);
+            div.setAttribute("name", "ref" + h);
+        
+            form.appendChild(div)
+            div.appendChild(input);
+            CountProds++;
+        }
     }
 
     

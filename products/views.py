@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from products.models import Products
 
 def index(request):
+    """Leva para a landing-page do site"""
     products = Products.objects.all()
     format_price(products)
     format_product_name(products)
@@ -13,16 +14,20 @@ def index(request):
     }
     return render(request, 'index.html', data)
 
-def product_id(request, product_id):
+def product_page(request, product_id):
+    """Direciona para a página do produto escolhido"""
     product = get_object_or_404(Products, pk=product_id)
+    formatted_reasons_to_buy = product.reasons_to_buy.split(",")
     format_price(product)
     data = {
-        'product' : product
+        'product' : product,
+        'formatted_reasons': formatted_reasons_to_buy
     }
 
     return render(request, "products/product-page.html", data)
 
 def create_product(request):
+    """Cria um anúncio de produto"""
     if request.method == 'POST':
         product_owner = get_object_or_404(User, pk=request.user.id)
         name = request.POST['product_name']
@@ -54,6 +59,31 @@ def create_product(request):
 
     return render(request, 'products/create-product.html')
 
+def edit_product(request, product_id):
+    """Direciona para a página que irá editar as informações do produtos, passando o produto específico para edição"""
+    product = get_object_or_404(Products, pk=product_id)
+    product_to_edit = {'product':product}
+    return render(request, 'products/edit-product.html', product_to_edit)
+
+def update_product(request):
+    """Atualiza as informações do produto"""
+    if request.method == 'POST':
+        product_id = request.POST['product_id']
+        prod = Products.objects.get(pk=product_id)
+        prod.name = request.POST['product_name']
+        prod.description = request.POST['description']
+        prod.price = request.POST['price']
+        prod.product_resume = request.POST['product_resume']
+        prod.comment1 = request.POST['comment1']
+        prod.comment2 = request.POST['comment2']
+        prod.product_information = request.POST['product_information']
+        if get_reasons_to_buy(request) != '':
+            prod.reasons_to_buy = get_reasons_to_buy(request)
+        if 'photo' in request.FILES:
+            prod.photo = request.FILES['photo']
+        prod.save()
+        return redirect('product-page/' + str(product_id))
+
 def get_reasons_to_buy(request):
     """Armazena numa string todos os motivos para comprar o produto"""
     i = 1
@@ -62,7 +92,7 @@ def get_reasons_to_buy(request):
     try:
         while request.POST['reasons_to_buy'+str(i)] != '':
             reasons = request.POST['reasons_to_buy'+str(i)]
-            all_reasons += "\n" + reasons      
+            all_reasons += reasons + ","      
                      
             i += 1 
     except:

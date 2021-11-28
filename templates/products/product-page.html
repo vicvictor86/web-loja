@@ -13,9 +13,10 @@
       <section class="">
         
         <div style="display: flex;" class="container">
-          <input style="height: 50%; margin-right: 2vw;" type="button" value="<--" onclick="history.go(-1)">
+          <!-- <input style="height: 50%; margin-right: 2vw;" type="button" value="Página principal" onclick="history.go(-1)"> -->
+          <a type="button" style="background: #006eb5; border-radius: 4px; appearance: button; justify-content: center; align-items: center; display: flex; width: 20%; height: 50%; color: white; font-style: italic;" href="http://localhost:8000/">Página principal</a>
           <div class="col-3 text--center">
-            <img src="{{ product.photo.url }}" alt="" class="details-img--ball" />
+            <img src="{{ product.photo.url }}" alt="Foto do produto" class="details-img--ball" />
           </div>
           <div class="col-7 details">
             <h1>Bom dia, {{ user.username }}</h1>
@@ -23,6 +24,9 @@
             <p>{{ product.description }}</p>
             <p>Quem está vendendo esse produto é o usuário {{ product.product_owner }}.</p>
           </div>
+          {% if user.id == product.product_owner.id %}
+            <a type="button" style="background: #006eb5; border-radius: 4px; appearance: button; justify-content: center; align-items: center; display: flex; width: 20%; height: 50%; color: white; font-style: italic;" href="{% url 'edit_product' product.id %}">Editar produto</a>
+          {% endif %}
         </div>
       </section>
 
@@ -46,21 +50,21 @@
         <div class="container text--center">
           <h3>Razões para comprar esse produto</h3>
           <div class="col-5 text--left">
-            <ul>
-              <li>{{ product.reasons_to_buy }}</li>
-              <li>Its awesome</li>
-              <li>It makes you happy</li>
-              <li>It brings world peace</li>
-              <li>Its free!</li>
+            <ul>    
+              <li>{{ formatted_reasons.0 }}</li>
+              <li>{{ formatted_reasons.1 }}</li>
+              <li>{{ formatted_reasons.2 }}</li>
+              <li>{{ formatted_reasons.3 }}</li>
+              <li>{{ formatted_reasons.4 }}</li>
             </ul>
           </div>
           <div class="col-5 text--left">
             <ul>
-              <li>Its the best</li>
-              <li>Its awesome</li>
-              <li>It makes you happy</li>
-              <li>It brings world peace</li>
-              <li>Its free!</li>
+              <li>{{ formatted_reasons.5 }}</li>
+              <li>{{ formatted_reasons.6 }}</li>
+              <li>{{ formatted_reasons.7 }}</li>
+              <li>{{ formatted_reasons.8 }}</li>
+              <li>{{ formatted_reasons.9 }}</li>
             </ul>
           </div>
         </div>

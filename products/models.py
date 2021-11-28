@@ -15,5 +15,6 @@ class Products(models.Model):
     date_product = models.DateTimeField(default=datetime.now, blank=True)
     photo = models.ImageField(upload_to='fotos/%d/%m%Y', blank = True)
     public = models.BooleanField(default=False)
+    sold = models.BooleanField(default=False)
     def __str__(self):
         return self.name
