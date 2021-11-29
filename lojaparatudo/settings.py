@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 ]
 
 DJANGO_LIVESYNC = {
-    'PORT': 8000
+    'PORT': 8000,
+    'HOST': '127.0.0.1'
 }
 
 

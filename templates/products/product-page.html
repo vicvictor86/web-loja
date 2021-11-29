@@ -6,15 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produto</title>
-
     <link rel="stylesheet" href="{% static 'css/product_page.css' %}">
 </head>
+
 <body>
-      <section class="">
+    <section >
         
         <div style="display: flex;" class="container">
-          <!-- <input style="height: 50%; margin-right: 2vw;" type="button" value="Página principal" onclick="history.go(-1)"> -->
-          <a type="button" style="background: #006eb5; border-radius: 4px; appearance: button; justify-content: center; align-items: center; display: flex; width: 20%; height: 50%; color: white; font-style: italic;" href="http://localhost:8000/">Página principal</a>
+          <div>
+            <a type="button" style="background: #006eb5; border-radius: 4px; display: flex; flex-direction: row; justify-content: center; align-items: center; width: 150px; padding: 4px 16px; color: white; font-style: italic;" href="http://localhost:8000/">Página principal</a>
+          </div>
           <div class="col-3 text--center">
             <img src="{{ product.photo.url }}" alt="Foto do produto" class="details-img--ball" />
           </div>
@@ -25,7 +26,9 @@
             <p>Quem está vendendo esse produto é o usuário {{ product.product_owner }}.</p>
           </div>
           {% if user.id == product.product_owner.id %}
-            <a type="button" style="background: #006eb5; border-radius: 4px; appearance: button; justify-content: center; align-items: center; display: flex; width: 20%; height: 50%; color: white; font-style: italic;" href="{% url 'edit_product' product.id %}">Editar produto</a>
+          <div>
+            <a type="button" style="background: #006eb5; border-radius: 4px; display: flex; flex-direction: row; justify-content: center; align-items: center; width: 150px; padding: 4px 16px; color: white; font-style: italic;" href="{% url 'edit_product' product.id %}">Editar produto</a>
+          </div>
           {% endif %}
         </div>
       </section>
@@ -34,7 +37,7 @@
         <div class="container">
           <h1>{{ product.product_resume }}</h1>
           <h2>{{ product.comment1 }}</h2>
-          <a href="#" class="btn btn-transparent">Compre agora</a>
+          <a href="buy-product/{{product.id}}" class="btn btn-transparent">Compre agora</a>
           <h2>Por apenas R${{ product.price }}</h2>
         </div>
       </header>

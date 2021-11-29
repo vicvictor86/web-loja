@@ -84,6 +84,14 @@ def update_product(request):
         prod.save()
         return redirect('product-page/' + str(product_id))
 
+def buy_product(request, product_id):
+    product = get_object_or_404(Products, pk=product_id)
+    format_price(product)
+    data = {
+        'product': product
+    }
+    return render(request, 'products/buy-product.html', data)
+
 def get_reasons_to_buy(request):
     """Armazena numa string todos os motivos para comprar o produto"""
     i = 1
@@ -97,6 +105,41 @@ def get_reasons_to_buy(request):
             i += 1 
     except:
         return all_reasons
+
+def confirmed_purchase(request, product_id, user_id):
+    """Faz a compra do produto, fazendo a transferência entre vendedor e comprador e mudando o dono do produto"""
+    product = Products.objects.get(pk=product_id)
+    buyer = User.objects.get(pk=user_id)
+    seller = User.objects.get(pk=product.product_owner_id)
+
+    if product.product_owner_id == user_id:
+        #mensagem de erro dizendo que a pessoa já é dona do produto
+        print("erro dono")
+        return redirect('index')
+    if buyer.client.fund < product.price:
+        print("Erro preço")
+        #messagem de erro dizendo que a pessoa n tem dinheiro suficiente para compra
+        return redirect('index')
+    if product.sold:
+        print("erro vendido")
+        #messagem de erro dizendo que o produto já está vendido
+        return redirect('index')
+
+    #transferência
+    buyer.client.fund -= product.price
+    seller.client.fund += product.price
+
+    #mudança de dono
+    product.product_owner_id = user_id
+    product.sold = True
+
+    #salva no banco de dados
+    buyer.client.save()
+    seller.client.save()
+    product.save()
+
+    #menssagem de sucesso de compra
+    return redirect('index')
 
 def format_price(products):
     """Muda o ponto do número decimal para vírgula para ficar nos padrões brasileiros"""
