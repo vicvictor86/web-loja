@@ -1,7 +1,7 @@
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
-from products.models import Products
+from products.models import Cart_Products, Products
 
 def index(request):
     """Leva para a landing-page do site"""
@@ -115,15 +115,15 @@ def confirmed_purchase(request, product_id, user_id):
     if product.product_owner_id == user_id:
         #mensagem de erro dizendo que a pessoa já é dona do produto
         print("erro dono")
-        return redirect('index')
+        return redirect('buy_product', product_id)
     if buyer.client.fund < product.price:
         print("Erro preço")
         #messagem de erro dizendo que a pessoa n tem dinheiro suficiente para compra
-        return redirect('index')
+        return redirect('buy_product', product_id)
     if product.sold:
         print("erro vendido")
         #messagem de erro dizendo que o produto já está vendido
-        return redirect('index')
+        return redirect('buy_product', product_id)
 
     #transferência
     buyer.client.fund -= product.price
@@ -140,6 +140,40 @@ def confirmed_purchase(request, product_id, user_id):
 
     #menssagem de sucesso de compra
     return redirect('index')
+
+def cancel_purchase(request, product_id):
+    return redirect('product_page', product_id)
+
+def add_cart(request, product_id, user_id):
+    """Adiciona um produto no carrinho do usuário, caso exista"""
+    if user_id == Products.objects.get(id=product_id).product_owner_id:
+        #Erro de dono querendo botar seu próprio produto no carrinho
+       return redirect('index')
+    Cart_Products.objects.create(buyer_id=user_id, product_id=product_id)
+    return redirect('products_in_cart', user_id)
+
+def products_in_cart(request, user_id):
+    """Pega os produtos salvos na lista de carrinhos e busca na tabela de produtos as informações daqueles produtos"""
+    products_cart = Cart_Products.objects.filter(buyer_id=user_id)
+    
+    products = []
+    for product in products_cart:
+        actual_product = Products.objects.get(id=product.product_id)
+        format_product_name(actual_product)
+        format_price(actual_product)
+        products.append(actual_product)
+
+    data = {
+        'products':products
+    }
+
+    return render(request, 'products/cart-list.html', data)
+
+def delete_cart_product(request, user_id, product_id):
+    """Deleta um produto do carrinho do usuário"""
+    product = Cart_Products.objects.filter(buyer_id=user_id, product_id=product_id)
+    product.delete()
+    return redirect('products_in_cart', user_id)
 
 def format_price(products):
     """Muda o ponto do número decimal para vírgula para ficar nos padrões brasileiros"""

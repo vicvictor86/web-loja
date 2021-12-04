@@ -1,0 +1,37 @@
+{% load static %}
+{% include 'partials/_header.html' %}
+
+
+
+<section class="mt-8">
+    
+    <div class="w-full container mx-auto flex flex-wrap items-center justify-center mt-0 py-2">
+        {% if not products %}
+            <h1 class="flex justify-center items-center m-64">O seu carrinho está vazio. Busque algum produto em nosso site.</h1>
+        {% endif %}
+    </div>
+
+      <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+        {% if products %}
+        <div class="ml-4 mt-16">
+            <h1>Lista de produto no carrinho:</h1>
+        </div>
+        <div class="grid grid-cols-2 gap-4 xl:grid-cols-4 p-4">
+            {% for product in products %}
+            <div style="background:#fafafa; border-radius: 8px; padding-bottom: 8px;">
+              <img style="border-radius: 8px 8px 0 0;" class="w-full max-h-60" src="{{ product.photo.url }}" alt="" />  
+              <div style="min-height: 80px;" class="flex justify-between items-center p-3">
+                <a class="text-xl text-gray-500" href="product-page/{{ product.id }}">{{ product.name }}</a>
+                <span class="text-xl text-gray-500 font-semibold">R${{ product.price }}</span>
+              </div>
+              <div class="w-full flex justify-center items-center px-3">
+                <a class="flex text-xl p-2 font-semibold justify-center items-center" style="color: white; background: #093ce4; border-radius: 4px;" href="{% url 'product_page' product.id %}" >Visualizar</a>
+                <a class="flex text-xl p-2 font-semibold justify-center items-center ml-2" style="color: white; background: #093ce4; border-radius: 4px;"href="{% url 'delete_cart_product' product.id user.id %}">Remover</a>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>

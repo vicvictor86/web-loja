@@ -18,3 +18,7 @@ class Products(models.Model):
     sold = models.BooleanField(default=False)
     def __str__(self):
         return self.name
+
+class Cart_Products(models.Model):
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)

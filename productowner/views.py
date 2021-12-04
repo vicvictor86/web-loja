@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Client
@@ -64,6 +64,15 @@ def logout(request):
     """Realiza o logout"""
     auth.logout(request)
     return redirect('index')
+
+def perfil(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+
+    data = {
+        'user':user
+    }
+
+    return render(request, 'users/perfil.html', data)
 
 def empty(campo):
     return not campo.strip()

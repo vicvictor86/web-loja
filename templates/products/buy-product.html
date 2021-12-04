@@ -33,7 +33,8 @@
         </div>
 
         <div class="flex justify-center align-items">
-            <a style="background: #006eb5; appearance: button;" class="flex justify-center align-items text-white rounded-md p-4" href="{% url 'confirmed_purchase' product.id user.id %}">Finalizar compra</a>
+            <a style="background: #006eb5;" class="flex justify-center align-items text-white rounded-md p-4" href="{% url 'confirmed_purchase' product.id user.id %}">Finalizar compra</a>
+            <a style="background: #006eb5;" class="flex justify-center align-items text-white rounded-md p-4 ml-2" href="{% url 'cancel_purchase' product.id %}">Cancelar Compra</a>
         </div>
     </div>
 </body>
