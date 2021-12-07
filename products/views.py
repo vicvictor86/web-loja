@@ -33,6 +33,7 @@ def create_product(request):
         name = request.POST['product_name']
         description = request.POST['description']
         price = request.POST['price']
+        quantity = request.POST['quantity']
         product_resume = request.POST['product_resume']
         comment1 = request.POST['comment1']
         comment2 = request.POST['comment2']
@@ -47,6 +48,7 @@ def create_product(request):
             name = name,
             description = description,
             price = price,
+            quantity= quantity,
             product_resume = product_resume,
             comment1 = comment1,
             comment2 = comment2,
@@ -73,6 +75,7 @@ def update_product(request):
         prod.name = request.POST['product_name']
         prod.description = request.POST['description']
         prod.price = request.POST['price']
+        prod.quantity = request.POST['quantity']
         prod.product_resume = request.POST['product_resume']
         prod.comment1 = request.POST['comment1']
         prod.comment2 = request.POST['comment2']
@@ -84,11 +87,14 @@ def update_product(request):
         prod.save()
         return redirect('product-page/' + str(product_id))
 
-def buy_product(request, product_id):
+def buy_product(request, product_id, quantity = 1):
     product = get_object_or_404(Products, pk=product_id)
+    if request.method == "POST":
+        quantity = str(request.POST['product_quantity'+str(product_id)])
     format_price(product)
     data = {
-        'product': product
+        'product': product,
+        'quantity': quantity
     }
     return render(request, 'products/buy-product.html', data)
 
@@ -111,27 +117,40 @@ def confirmed_purchase(request, product_id, user_id):
     product = Products.objects.get(pk=product_id)
     buyer = User.objects.get(pk=user_id)
     seller = User.objects.get(pk=product.product_owner_id)
+    if request.method == "POST":
+        buy_quantity = int(request.POST['buy_quantity'])
 
     if product.product_owner_id == user_id:
         #mensagem de erro dizendo que a pessoa já é dona do produto
         print("erro dono")
-        return redirect('buy_product', product_id)
+        return redirect('buy_product', product_id, buy_quantity)
     if buyer.client.fund < product.price:
         print("Erro preço")
         #messagem de erro dizendo que a pessoa n tem dinheiro suficiente para compra
-        return redirect('buy_product', product_id)
+        return redirect('buy_product', product_id, buy_quantity)
     if product.sold:
         print("erro vendido")
         #messagem de erro dizendo que o produto já está vendido
-        return redirect('buy_product', product_id)
+        return redirect('buy_product', product_id, buy_quantity)
+    if product.quantity < buy_quantity:
+        print("Erro de quantidade")
+        return redirect('buy_product', product_id, buy_quantity)
 
     #transferência
     buyer.client.fund -= product.price
     seller.client.fund += product.price
+    product.quantity -= buy_quantity
 
     #mudança de dono
     product.product_owner_id = user_id
-    product.sold = True
+    #Todos os produtos vendidos
+    if product.quantity == 0:
+        product.sold = True
+    
+    #Deleta o produto do carrinho de compras
+    cart_product = Cart_Products.objects.filter(buyer_id=user_id, product_id=product_id)
+    if cart_product:
+        cart_product.delete()
 
     #salva no banco de dados
     buyer.client.save()
@@ -146,9 +165,13 @@ def cancel_purchase(request, product_id):
 
 def add_cart(request, product_id, user_id):
     """Adiciona um produto no carrinho do usuário, caso exista"""
+    #verificar se o produto já existe, caso exista não adicionar dois produtos iguaiss
     if user_id == Products.objects.get(id=product_id).product_owner_id:
         #Erro de dono querendo botar seu próprio produto no carrinho
        return redirect('index')
+    if Cart_Products.objects.filter(buyer_id=user_id, product_id=product_id):
+        #erro de querer adicionar um produto que já existe no carrinho
+        return redirect('index')
     Cart_Products.objects.create(buyer_id=user_id, product_id=product_id)
     return redirect('products_in_cart', user_id)
 
@@ -156,15 +179,21 @@ def products_in_cart(request, user_id):
     """Pega os produtos salvos na lista de carrinhos e busca na tabela de produtos as informações daqueles produtos"""
     products_cart = Cart_Products.objects.filter(buyer_id=user_id)
     
+    product_sequence = {}
     products = []
+    counter = 0
     for product in products_cart:
         actual_product = Products.objects.get(id=product.product_id)
         format_product_name(actual_product)
         format_price(actual_product)
+
         products.append(actual_product)
+        product_sequence[actual_product.id] = counter
+        counter += 1
 
     data = {
-        'products':products
+        'products':products,
+        'sequence':product_sequence
     }
 
     return render(request, 'products/cart-list.html', data)

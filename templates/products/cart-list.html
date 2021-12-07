@@ -1,37 +1,69 @@
 {% load static %}
 {% include 'partials/_header.html' %}
+{% load change_quantity %}
 
+<body onload="VerifyChange(true)">
 
+  <script src="{% static 'js/cartlist.js' %}"></script>
 
-<section class="mt-8">
-    
+  <section class="mt-8">
+
     <div class="w-full container mx-auto flex flex-wrap items-center justify-center mt-0 py-2">
-        {% if not products %}
-            <h1 class="flex justify-center items-center m-64">O seu carrinho está vazio. Busque algum produto em nosso site.</h1>
-        {% endif %}
+      {% if not products %}
+      <h1 class="flex justify-center items-center m-64">O seu carrinho está vazio. Busque algum produto em nosso site.
+      </h1>
+      {% endif %}
     </div>
 
-      <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
-        {% if products %}
-        <div class="ml-4 mt-16">
-            <h1>Lista de produto no carrinho:</h1>
-        </div>
-        <div class="grid grid-cols-2 gap-4 xl:grid-cols-4 p-4">
-            {% for product in products %}
-            <div style="background:#fafafa; border-radius: 8px; padding-bottom: 8px;">
-              <img style="border-radius: 8px 8px 0 0;" class="w-full max-h-60" src="{{ product.photo.url }}" alt="" />  
-              <div style="min-height: 80px;" class="flex justify-between items-center p-3">
-                <a class="text-xl text-gray-500" href="product-page/{{ product.id }}">{{ product.name }}</a>
-                <span class="text-xl text-gray-500 font-semibold">R${{ product.price }}</span>
-              </div>
-              <div class="w-full flex justify-center items-center px-3">
-                <a class="flex text-xl p-2 font-semibold justify-center items-center" style="color: white; background: #093ce4; border-radius: 4px;" href="{% url 'product_page' product.id %}" >Visualizar</a>
-                <a class="flex text-xl p-2 font-semibold justify-center items-center ml-2" style="color: white; background: #093ce4; border-radius: 4px;"href="{% url 'delete_cart_product' product.id user.id %}">Remover</a>
-              </div>
+    <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+      {% if products %}
+      <div class="mt-16">
+        <h1 class="inline-block">Lista de produto no carrinho:</h1>
+      </div>
+      <div class="grid grid-cols-2 gap-4 xl:grid-cols-4 p-4 bg-gray-100">
+        {% for product in products %}
+        <div style="background:#fafafa; border-radius: 8px; padding-bottom: 8px;">
+          <img style="border-radius: 8px 8px 0 0;" class="w-full max-h-60" src="{{ product.photo.url }}" alt="" />
+          <div style="min-height: 80px;" class="flex justify-between items-center p-3">
+            <a class="text-xl text-gray-500" href="product-page/{{ product.id }}">{{ product.name }}</a>
+            <span id="product_price_text"class="text-xl text-gray-500 font-semibold">R${{ product.price }}</span>
+          </div>
+          <div class="w-full flex justify-center items-center px-3">
+            <a class="flex text-xl p-2 font-semibold justify-center items-center"
+              style="color: white; background: #093ce4; border-radius: 4px;"
+              href="{% url 'product_page' product.id %}">Visualizar</a>
+            <a class="flex text-xl p-2 font-semibold justify-center items-center ml-2"
+              style="color: white; background: #093ce4; border-radius: 4px;"
+              href="{% url 'delete_cart_product' product.id user.id %}">Remover</a>
+          </div>
+          <div >
+            <form id="price_form{{product.id}}" action="{% url 'buy_product' product.id 1 %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}              
+              <script>
+                AddQuantityInput('{{ product.price }}', '{{ product.id }}');
+                AddListId('{{ product.id }}');
+              </script>              
+              <label class="flex text-gray-600 mb-2 mr-0">
+                <p>O preço total será de</p>
+                <p class="flex text-gray-600 ml-1" id="result{{ product.id }}"></p>
+              </label>
+              <script>
+                ValueDefaultResult('{{ product.price }}', '{{ product.id }}');
+              </script>
+              <!-- Fazer a função de aparecer o total do custo dos itens do mercado -->
+              <div class="text-center">
+                
+                <button style="background: #006eb5;" class="w-full flex justify-center align-items text-white rounded-md p-4 mb-2" type="submit">Comprar este item</button>
             </div>
-            {% endfor %}
-            {% endif %}
+            </form>
           </div>
         </div>
+        {% endfor %}
+        {% endif %}
       </div>
-    </section>
+    </div>
+    <div>
+      {% include 'partials/_footer.html' %}
+    </div>
+  </section>
+</body>

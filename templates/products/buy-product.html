@@ -9,8 +9,10 @@
     <title>Loja Para Tudo</title>
 </head>
 
-<body class="bg-white">
+<body onload="VerifyChange(false)" class="bg-white">
     {% include 'partials/_header.html' %}
+    <script src="{% static 'js/cartlist.js' %}"></script>
+
     <div class="pt-40 container max-w-5xl mx-auto m-8">
         <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
           Confirmação de compra
@@ -25,18 +27,42 @@
                 <h3 id = "middle" class="text-3xl text-gray-800 font-bold leading-none mb-3">
                     O item que irá comprar é {{product.name}}
                 </h3>
-                <p class="text-gray-600 mb-8">
+                <p class="text-gray-600 mb-2">
                 O vendedor do produto é {{ product.product_owner }} e está vendendo o produto por 
-                R${{ product.price }}.
+                R${{ product.price }}.</p>
+                <p class="text-gray-600 mb-2">A quantidade disponível para compra: {{ product.quantity }}</p>
+                <p class="text-gray-600 mb-2">Seu saldo é de R${{ user.client.fund }}</p>
+                
             </div>
             <img class="w-1/4 h-1/5" src="{{product.photo.url}}" alt="Foto do produto">
         </div>
 
+        
         <div class="flex justify-center align-items">
-            <a style="background: #006eb5;" class="flex justify-center align-items text-white rounded-md p-4" href="{% url 'confirmed_purchase' product.id user.id %}">Finalizar compra</a>
-            <a style="background: #006eb5;" class="flex justify-center align-items text-white rounded-md p-4 ml-2" href="{% url 'cancel_purchase' product.id %}">Cancelar Compra</a>
+            <form action="{% url 'confirmed_purchase' product.id user.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    <label for="file"><b>Unidades para compra</b></label>
+                    <input type="text" id="product_price{{ product.id }}" value="{{ product.price }}" hidden/>
+                    <input type="number" id="product_quantity{{ product.id }}" min="1" class="form-control" value="{{ quantity }}" name="buy_quantity" onblur="PriceProduct('{{ product.id }}')" placeholder="Ex. 20" required>
+                    <script>
+                        AddListId('{{product.id}}')
+                    </script>
+                    <label class="flex text-gray-600 mb-2 mr-0">
+                        <p>O preço total será de </p>  
+                        <p class="flex text-gray-600" id="result{{ product.id }}"></p>
+                    </label>                   
+                </div>
+                <div class="text-center">
+                    <button style="background: #006eb5;" class="w-full flex justify-center align-items text-white rounded-md p-4 mb-2" type="submit">Finalizar compra</button>
+                    <a style="background: #006eb5;" class="flex justify-center align-items text-white rounded-md p-4" href="{% url 'cancel_purchase' product.id %}">Cancelar Compra</a>
+                </div>
+            </form>
         </div>
     </div>
+
+    {% include 'partials/_footer.html' %}
 </body>
+
 </html>
 

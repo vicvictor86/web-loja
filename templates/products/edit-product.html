@@ -18,6 +18,10 @@
                         <label for="file"><b>Preço</b></label>
                         <input type="number" class="form-control" name="price" value="{{ product.price }}" placeholder="Ex. 1000">
                     </div>
+                    <div class="col-12">
+                        <label for="file"><b>Quantidade</b></label>
+                        <input type="number" min="1" class="form-control" name="quantity" value="{{ product.quantity }}" placeholder="Ex. 20" required>
+                    </div>
                     <div class="col-12 col-lg-3">
                         <label for="file"><b>Resumo do produto</b></label>
                         <textarea class="form-control" name="product_resume" cols="30" rows="10" value="" placeholder="Ex. Tevelisão massa">{{ product.product_resume }}</textarea>

@@ -7,6 +7,7 @@ class Products(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     price = models.DecimalField(decimal_places=2, max_digits=8)
+    quantity = models.PositiveIntegerField()
     product_resume = models.CharField(max_length=500)
     comment1 = models.CharField(max_length=500)
     comment2 = models.CharField(max_length=500)
