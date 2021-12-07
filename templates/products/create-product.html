@@ -1,87 +1,111 @@
-<div class="row">
-    <div class="col-12">
-    <p>Todos os campos são obrigatórios</p>
-        <div class="contact-form-area">
-            <form action="{% url 'create_product' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                <div class="row">
-                    <div class="col-12 col-lg-12">
-                        <label for="product_name"><b>nome</b></label>
-                        <input type="text" id="product_name" class="form-control" name="product_name" placeholder="Ex. Televisão" required>
-                    </div>
-                    <div class="col-12">
-                        <label for="file"><b>Descrição</b></label>
-                        <textarea class="form-control" name="description" cols="30" rows="10" placeholder="Ex. Tevelisão LG Full HD" required></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label for="file"><b>Preço</b></label>
-                        <input type="number" min="0" step=".01" class="form-control" name="price" placeholder="Ex. 9,99" required>
-                    </div>
-                    <div class="col-12">
-                        <label for="file"><b>Quantidade</b></label>
-                        <input type="number" min="1" class="form-control" name="quantity" placeholder="Ex. 20" required>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Resumo do produto</b></label>
-                        <textarea class="form-control" name="product_resume" cols="30" rows="10" placeholder="Ex. Tevelisão massa" required></textarea>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Comentário 1</b></label>
-                        <input type="text" class="form-control" name="comment1" placeholder="Ex. Tv incrível" required>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Comentário 2</b></label>
-                        <input type="text" class="form-control" name="comment2" placeholder="Ex. Várias informações sobre o produto" required>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Informações do produto</b></label>
-                        <input type="text" class="form-control" name="product_information" required>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Razões para comprar(Limite 10)</b></label>
-                        
-                        <input type="button" onclick="AddInput()" value="Clique Aqui" />
-                        <div id="divForm">
+{% load static %}
 
+<body class="leading-normal tracking-normal">
+    {% include 'partials/_header.html' %}
+
+    <div class="pt-24">
+        
+        <div class="container px-3 mx-auto flex flex-wrap flex-row items-start">
+            <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left bg-gray-300 bg-opacity-75 rounded px-6 pb-6 ">
+                <div class="flex md:w-full justify-center md:text-left border-blue-400 border-b-4 mb-4">
+                    <p class="font-bold text-blue-400 ">Todos os campos são obrigatórios</p>
+                </div>
+                <form action="{% url 'create_product' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="">
+                        <div class="mb-2">
+                            <label class="bg-blue-400 rounded-l p-1" for="product_name"><b>Nome:</b></label>
+                            <input type="text" id="product_name" class="p-1" name="product_name"
+                                placeholder="Ex. Televisão" required>
+                        </div>
+                        <div class="">
+                            <label class="inline-block bg-blue-400 rounded-l p-1 mb-1" for="file"><b>Descrição:</b>
+                            </label>
+                            <textarea class="w-full mb-2" name="description" cols="30" rows="10"
+                            placeholder="Ex. Tevelisão LG Full HD" required></textarea>
+                            
+                        </div>
+                        <div class="mb-2">
+                            <label class="bg-blue-400 rounded-l p-1" for="file"><b>Preço:</b></label>
+                            <input type="number" min="0" step=".01" class="p-1" name="price"
+                                placeholder="Ex. 9,99" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="bg-blue-400 rounded-l p-1" for="file"><b>Quantidade:</b></label>
+                            <input type="number" min="1" class="p-1" name="quantity" placeholder="Ex. 20"
+                                required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="inline-block bg-blue-400 rounded-l p-1 mb-1" for="file"><b>Resumo do produto:</b></label>
+                            <textarea class="w-full" name="product_resume" cols="30" rows="10"
+                                placeholder="Ex. Tevelisão massa" required></textarea>
+                        </div>
+                        <div class="mb-2 col-lg-3">
+                            <label class="bg-blue-400 rounded-l p-1" for="file" for="file"><b>Comentário 1:</b></label>
+                            <input type="text" class="p-1" name="comment1" placeholder="Ex. Tv incrível"
+                                required>
+                        </div>
+                        <div class="mb-2 col-lg-3">
+                            <label class="bg-blue-400 rounded-l p-1" for="file" for="file"><b>Comentário 2:</b></label>
+                            <input type="text" class="p-1" name="comment2"
+                                placeholder="Ex. Várias informações sobre o produto" required>
+                        </div>
+                        <div class="mb-2 col-lg-3">
+                            <label class="bg-blue-400 rounded-l p-1" for="file" for="file"><b>Informações do produto:</b></label>
+                            <input type="text" class="p-1" name="product_information" required>
+                        </div>
+                        <div class="mb-2 col-lg-3">
+                            <label for="file"><b>Razões para comprar(Limite 10)</b></label>
+
+                            <input type="button" onclick="AddInput()" value="Clique Aqui" />
+                            <div id="divForm">
+
+                            </div>
+                        </div>
+                        <div class="mb-2 col-lg-3">
+                            <label for="file"><b>Foto do produto</b></label>
+                            <input type="file" class="form-control" name="photo" required>
+                        </div>
+                        <div class="mb-2 text-center flex justify-center mt-8">
+                            <button style="background: #006eb5;" class="flex justify-center align-items text-white rounded-md p-4" type="submit">Criar seu produto</button>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Foto do produto</b></label>
-                        <input type="file" class="form-control" name="photo" required>
-                    </div>
-                    <div class="col-12 text-center">
-                        <button class="btn delicious-btn mt-30" type="submit">Criar seu produto</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="md:w-3/5 bg-blue-400 px-6 pb-6 rounded ">
+                <p class="flex justify-center font-bold text-gray-800 border-gray-800 border-b-4 mb-4">Exemplo de como será a página do produto</p>
+                <img class="w-full h-auto" src="{% static 'photos/template_announcement.png' %}"/>
+            </div>
         </div>
     </div>
-</div>
+</body>
+
 
 <script>
     var CountProds = 1;
     function AddInput() {
-        if(CountProds < 10){
+        if (CountProds <= 10) {
             h = CountProds;
             var form = document.getElementById("divForm");
             var input = document.createElement("INPUT");
             var div = document.createElement("div");
-            
+
             input.setAttribute("type", "text");
             input.setAttribute("id", "reasons_to_buy" + h);
             input.setAttribute("name", "reasons_to_buy" + h);
             input.setAttribute("required", "");
-        
+
             div.setAttribute("id", "ref" + h);
             div.setAttribute("name", "ref" + h);
-        
+            div.setAttribute("class", "mb-2 ml-2")
+
             form.appendChild(div)
             div.appendChild(input);
             CountProds++;
         }
     }
 
-    
+
 
     // window.onbeforeunload = function() {
     //     sessionStorage.setItem("product_name", $('#product_name').val());
@@ -95,9 +119,9 @@
     //     sessionStorage.setItem("teste", 123);
     // }
 
-    window.onload = function() {
+    window.onload = function () {
 
-        
+
         // var teste = localStorage.getItem("teste");
         // if (teste !== null) 
         //  $('#teste').val("teste");
@@ -105,13 +129,13 @@
         // var product_name = localStorage.getItem("product_name");
         // if (product_name !== null) 
         //  $('#product_name').val("product_name");
-        
+
         // var description = localStorage.getItem("product_description");
         // if (description !== null) $('#inputdescription').val("description");
 
         // var product_resume = localStorage.getItem("product_product_resume");
         // if (product_resume !== null) $('#inputproduct_resume').val("product_resume");
-        
+
         // var subject = localStorage.getItem("product_subject");
         // if (subject !== null) $('#inputsubject').val("subject");
 
@@ -120,7 +144,7 @@
 
         // var comment2 = localStorage.getItem("product_comment2");
         // if (comment2 !== null) $('#inputcomment2').val("comment2");
-        
+
         // var product_information = localStorage.getItem("product_product_information");
         // if (product_information !== null) $('#inputproduct_information').val("product_information");
 
