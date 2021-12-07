@@ -1,43 +1,52 @@
-<div class="contact-area section-padding-0-80">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <a href="http://localhost:8000/">Voltar</a>
-                <div class="section-heading">
-                    <h2>Criar conta</h2>
-                </div>
-            </div>
-        </div>
+<body>
+    {% include 'partials/_header.html' %}
+    <div class="pt-48 pb-48">
+        <div class="container px-3 mx-auto flex flex-wrap flex-row items-center">
+            <div class="flex md:w-full h-96 justify-center items-center md:text-left ">
+                <form class="flex justify-center items-center h-full rounded border-gray-600 border-8 px-8 py-64" action="{% url 'create_user' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
 
-        <div class="row">
-            <div class="col-12">
-                <div class="contact-form-area">
-                    <form action="{% url 'create_user' %}" method="POST">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-12 col-lg-12">
-                                <label for="name"><b>Nome completo</b></label>
-                                <input type="text" class="form-control" name="name" placeholder="Ex.:Guilherme Lima" required>
-                            </div>
-                            <div class="col-12 col-lg-12">
-                                <label for="email"><b>Email</b></label>
-                                <input type="email" class="form-control" name="email" placeholder="Ex.: victor@outlook.com" required>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                                <label for="password"><b>Senha</b></label>
-                                <input type="password" class="form-control" name="password" placeholder="Digite sua senha" required>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                                <label for="password2"><b>Confirmação de senha</b></label>
-                                <input type="password" class="form-control" name="password2" placeholder="Digite sua senha mais uma vez" required>
-                            </div>
-                            <div class="col-12 text-center">
-                                <button class="btn btn-success" type="submit">Crie sua conta</button>
-                            </div>
+                        <div class="font-bold m-4">
+                            Bem vindo ao Para Tudo, vamos criar sua conta.
                         </div>
-                    </form>
-                </div>
+
+                        <div class="flex justify-center items-center m-4">
+                            <svg class="h-8 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.005 512.005">
+                                <rect fill="#2a2a31" x="16.539" y="425.626" width="479.767" height="50.502" transform="matrix(1,0,0,1,0,0)" />
+                                <path
+                                  class="plane-take-off"
+                                  d=" M 510.7 189.151 C 505.271 168.95 484.565 156.956 464.365 162.385 L 330.156 198.367 L 155.924 35.878 L 107.19 49.008 L 211.729 230.183 L 86.232 263.767 L 36.614 224.754 L 0 234.603 L 45.957 314.27 L 65.274 347.727 L 105.802 336.869 L 240.011 300.886 L 349.726 271.469 L 483.935 235.486 C 504.134 230.057 516.129 209.352 510.7 189.151 Z "
+                                />
+                            </svg>
+                        </div>
+                        <div>
+                            <label class="text-gray-800" for="name">Nome completo:</label>
+                            <input class="w-full border-b-2" class="w-full border-b-2" type="text" class="form-control" name="name" placeholder="Ex.:Guilherme Lima" required>
+                        </div>
+                        <div>
+                            <label class="text-gray-800" for="email">Email:</label>
+                            <input class="w-full border-b-2" type="email" class="form-control" name="email" placeholder="Ex.: victor@outlook.com"
+                                required>
+                        </div>
+                        <div>
+                            <label class="text-gray-800" for="password">Senha:</label>
+                            <input class="w-full border-b-2" type="password" class="form-control" name="password" placeholder="Digite sua senha"
+                                required>
+                        </div>
+                        <div>
+                            <label class="text-gray-800" for="password2">Confirmação de senha:</label>
+                            <input class="w-full border-b-2" type="password" class="form-control" name="password2"
+                                placeholder="Digite sua senha mais uma vez" required>
+                        </div>
+                        <div class="text-gray-800 flex justify-center align-items mt-8">
+                            <button class="bg-gray-800 flex justify-center align-items text-white rounded-md p-4" type="submit">Crie sua conta</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+
+    {% include 'partials/_footer.html' %}
+</body>
