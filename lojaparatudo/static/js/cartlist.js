@@ -26,7 +26,6 @@ function AddQuantityInput(price_product, product_id) {
     input_quantity.setAttribute("class", "form-control");
     input_quantity.setAttribute("name", "product_quantity" + h);
     input_quantity.setAttribute("required", "");
-    //input_quantity.setAttribute("onblur", "PriceProduct(" + product_id + ")");
 
     div.setAttribute("id", "ref" + h);
     div.setAttribute("name", "ref" + h);

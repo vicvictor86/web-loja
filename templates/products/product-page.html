@@ -45,7 +45,7 @@
           <h1>{{ product.product_resume }}</h1>
           <h2>{{ product.comment1 }}</h2>
           
-          <a style="min-width: 165.75px; max-width: 218.35; margin-right: 4px;" href="buy-product/{{product.id}}" class="btn btn-transparent">Compre agora</a>
+          <a style="min-width: 165.75px; max-width: 218.35; margin-right: 4px;" href="{% url 'buy_product' product.id 1%}" class="btn btn-transparent">Compre agora</a>
           <!-- Mensagem que precisa está logado para colocar no carrinho, solução provisória -->
           {% if user.is_authenticated %}
           <a href="{% url 'add_cart' product.id user.id%}" class="btn btn-transparent">Adicionar carrinho</a>
@@ -88,7 +88,7 @@
       <section class="text--center bg-gray-200">
         <div class="container">
           <h3>Porque ainda está lendo?</h3>
-          <a href="#" class="btn">Compre agora!</a>
+          <a href="{% url 'buy_product' product.id 1%}" class="btn">Compre agora!</a>
         </div>
       </section>
       

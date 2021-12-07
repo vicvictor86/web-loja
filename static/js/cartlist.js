@@ -26,7 +26,6 @@ function AddQuantityInput(price_product, product_id) {
     input_quantity.setAttribute("class", "form-control");
     input_quantity.setAttribute("name", "product_quantity" + h);
     input_quantity.setAttribute("required", "");
-    //input_quantity.setAttribute("onblur", "PriceProduct(" + product_id + ")");
 
     div.setAttribute("id", "ref" + h);
     div.setAttribute("name", "ref" + h);
@@ -37,6 +36,13 @@ function AddQuantityInput(price_product, product_id) {
     div.appendChild(label);
     div.appendChild(input_price);
     div.appendChild(input_quantity);
+}
+
+function FormatPrice(price_product){
+    price_product = document.getElementById("product_price" + product_id).value;
+    price_product = price_product.replace(",", ".");
+    price_product = parseFloat(price_product);
+    return price_product
 }
 
 function ValueDefaultResult(price_product, product_id) {
@@ -89,7 +95,7 @@ function GetListResults() {
     return [listResults, listInput];
 }
 
-function VerifyChange() {
+function VerifyChange(needTotalResult) {
     //Muda o valor total, vindo da soma dos valores parciais dos produtos dos carrinhos
     var informations = GetListResults();
     var listResults = informations[0];
@@ -105,8 +111,10 @@ function VerifyChange() {
                 totalPrice += result;
             });
 
-            const result = document.getElementById("total_result");
-            result.textContent = totalPrice;
+            if(needTotalResult){
+                const result = document.getElementById("total_result");
+                result.textContent = totalPrice;
+            }
         });
     });
 }

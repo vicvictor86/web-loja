@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 ]
 
 DJANGO_LIVESYNC = {
-    'PORT': 8000,
+    'PORT': 8001,
     'HOST': '127.0.0.1'
 }
 
@@ -59,7 +59,9 @@ MIDDLEWARE = [
     'livesync.core.middleware.DjangoLiveSyncMiddleware',
 ]
 
-
+MIDDLEWARE_CLASSES = (
+    'livesync.core.middleware.DjangoLiveSyncMiddleware',
+)
 
 ROOT_URLCONF = 'lojaparatudo.urls'
 
