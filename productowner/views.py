@@ -47,8 +47,6 @@ def login(request):
             return redirect('login')
         print(email, password)
         if User.objects.filter(email=email).exists():
-            
-            client_objetc = User.objects.filter(email=email)
             name = User.objects.filter(email=email).values_list('username', flat=True).get()
             user = auth.authenticate(request, username=name, password=password)
             if user is not None:
@@ -74,8 +72,23 @@ def perfil(request, user_id):
 
     return render(request, 'users/perfil.html', data)
 
-def empty(campo):
-    return not campo.strip()
+def change_information(request, user_id):
+    if request.method == "POST":
+        user = User.objects.get(pk=user_id)
+        new_name = request.POST['username']
+        if not User.objects.filter(username=new_name):
+            user.username = new_name
+        user.email = request.POST['email']
+        new_password = request.POST['new_password']
+        confirm_new_password = request.POST['confirm_new_password']
 
-def not_equal_passwords(senha, senha2):
-    return senha != senha2
+        if not empty(new_password) and new_password == confirm_new_password :
+            user.set_password(new_password)
+        user.save()
+        return redirect('index')
+
+def empty(field):
+    return not field.strip()
+
+def not_equal_passwords(password, password2):
+    return password != password2
