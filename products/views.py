@@ -1,8 +1,9 @@
-from django.http.response import HttpResponse
+from django.core import paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.contrib import messages
 from products.models import Cart_Products, Products
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
     """Leva para a landing-page do site"""
@@ -10,8 +11,12 @@ def index(request):
     format_price(products)
     format_product_name(products)
 
+    paginator = Paginator(products, 4)
+    page = request.GET.get('page')
+    products_per_pag = paginator.get_page(page)
+    
     data = {
-        'products' : products
+        'products' : products_per_pag
     }
     return render(request, 'index.html', data)
 
