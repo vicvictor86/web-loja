@@ -1,88 +1,88 @@
-<div class="row">
-    <div class="col-12">
-    <p>Todos os campos são obrigatórios</p>
-        <div class="contact-form-area">
-            <form action="{% url 'update_product' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="text" id="product_id" class="form-control" name="product_id" value="{{product.id}}" hidden>
-                <div class="row">
-                    <div class="col-12 col-lg-12">
-                        <label for="product_name"><b>Nome {{ product.id }}</b></label>
-                        <input type="text" id="product_name" class="form-control" name="product_name" value="{{ product.name }}" placeholder="Ex. Televisão">
-                    </div>
-                    <div class="col-12">
-                        <label for="file"><b>Descrição</b></label>
-                        <textarea class="form-control" name="description" cols="30" rows="10" placeholder="Ex. Tevelisão LG Full HD">{{ product.description }}</textarea>
-                    </div>
-                    <div class="col-12">
-                        <label for="file"><b>Preço</b></label>
-                        <input type="number" class="form-control" name="price" value="{{ product.price }}" placeholder="Ex. 1000">
-                    </div>
-                    <div class="col-12">
-                        <label for="file"><b>Quantidade</b></label>
-                        <input type="number" min="1" class="form-control" name="quantity" value="{{ product.quantity }}" placeholder="Ex. 20" required>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Resumo do produto</b></label>
-                        <textarea class="form-control" name="product_resume" cols="30" rows="10" value="" placeholder="Ex. Tevelisão massa">{{ product.product_resume }}</textarea>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Comentário 1</b></label>
-                        <input type="text" class="form-control" name="comment1" value="{{ product.comment1 }}" placeholder="Ex. Tv incrível">
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Comentário 2</b></label>
-                        <input type="text" class="form-control" name="comment2" value="{{ product.comment2 }}" placeholder="Ex. Várias informações sobre o produto">
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Informações do produto</b></label>
-                        <input type="text" class="form-control" name="product_information" value="{{ product.product_informations }}">
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Razões para comprar(Limite 10)</b></label>
-                        
-                        <input type="button" onclick="AddInput()" value="Clique Aqui" />
-                        <div id="divForm">
+{% load static %}
 
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <label for="file"><b>Foto utilizada</b></label>
-                        <img src="{{ product.photo.url }}" alt="">
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <label for="file"><b>Foto do produto</b></label>
-                        <input type="file" class="form-control" name="photo">
-                    </div>
-                    <div class="col-12 text-center">
-                        <button class="btn delicious-btn mt-30" type="submit">Atualizar informações</button>
-                    </div>
+<body class="leading-normal tracking-normal">
+    {% include 'partials/_header.html' %}
+    <div class="pt-24">
+        <div class="container px-3 mx-auto flex flex-wrap flex-row items-start">
+            <div
+                class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left bg-gray-300 bg-opacity-75 rounded px-6 pb-6 ">
+                <div class="flex md:w-full justify-center md:text-left border-blue-400 border-b-4 mb-4">
+                    <p class="font-bold text-blue-400 ">Todos os campos são obrigatórios</p>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
+                <div class="contact-form-area">
+                    <form action="{% url 'update_product' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" id="product_id" class="form-control" name="product_id" value="{{product.id}}"
+                            hidden>
+                        <div class="row">
+                            <div class="mb-2">
+                                <label class="p-1" for="product_name"><b>Nome:</b></label>
+                                <input type="text" id="product_name" class="p-1 w-full" name="product_name"
+                                    value="{{ product.name }}" placeholder="Ex. Televisão">
+                            </div>
+                            <div>
+                                <label class="inline-block p-1 mb-1" for="file"><b>Descrição:</b></label>
+                                <textarea class="w-full mb-2" name="description" cols="30" rows="10"
+                                    placeholder="Ex. Tevelisão LG Full HD">{{ product.description }}</textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label class="p-1" for="file"><b>Preço:</b></label>
+                                <input type="number" class="p-1" name="price" value="{{ product.price }}"
+                                    placeholder="Ex. 1000">
+                            </div>
+                            <div class="mb-2">
+                                <label for="file"><b>Quantidade:</b></label>
+                                <input type="number" min="1" class="p-1" name="quantity"
+                                    value="{{ product.quantity }}" placeholder="Ex. 20" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="inline-block p-1 mb-1" for="file"><b>Resumo do produto:</b></label>
+                                <textarea class="w-full" name="product_resume" cols="30" rows="10" value=""
+                                    placeholder="Ex. Tevelisão massa">{{ product.product_resume }}</textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label class="p-1" for="file"><b>Comentário 1:</b></label>
+                                <input type="text" class="p-1" name="comment1" value="{{ product.comment1 }}"
+                                    placeholder="Ex. Tv incrível">
+                            </div>
+                            <div class="mb-2">
+                                <label class="p-1" for="file"><b>Comentário 2:</b></label>
+                                <input type="text" class="p-1" name="comment2" value="{{ product.comment2 }}"
+                                    placeholder="Ex. Várias informações sobre o produto">
+                            </div>
+                            <div class="mb-2">
+                                <label class="p-1" for="file"><b>Informações do produto:</b></label>
+                                <input type="text" class="p-1" name="product_information"
+                                    value="{{ product.product_informations }}">
+                            </div>
+                            <div class="mb-2">
+                                <label for="file"><b>Razões para comprar(Limite 10)</b></label>
 
-<script>
-    var CountProds = 1;
-    function AddInput() {
-        if(CountProds < 10){
-            h = CountProds;
-            var form = document.getElementById("divForm");
-            var input = document.createElement("INPUT");
-            var div = document.createElement("div");
-            
-            input.setAttribute("type", "text");
-            input.setAttribute("id", "reasons_to_buy" + h);
-            input.setAttribute("name", "reasons_to_buy" + h);
-            input.setAttribute("required", "");
-        
-            div.setAttribute("id", "ref" + h);
-            div.setAttribute("name", "ref" + h);
-        
-            form.appendChild(div)
-            div.appendChild(input);
-            CountProds++;
-        }
-    }
-</script>
+                                <input style="background: #006eb5;" class="text-white rounded-md p-2 cursor-pointer" type="button" onclick="AddInput()" value="Criar razão" />
+                                <div id="divForm">
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <label for="file"><b>Foto utilizada:</b></label>
+                                <img class="border-8 border-white mb-2" src="{{ product.photo.url }}" alt="">
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <label for="file"><b>Foto do produto:</b></label>
+                                <input type="file" class="form-control" name="photo">
+                            </div>
+                            <div class="flex justify-center items-center mt-4">
+                                <button style="background: #006eb5;" class="flex justify-center align-items text-white rounded-md p-4" type="submit">Atualizar informações</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="md:w-3/5 bg-blue-400 px-6 pb-6 rounded ">
+                <p class="flex justify-center font-bold text-gray-800 border-gray-800 border-b-4 mb-4">Exemplo de como será a página do produto</p>
+                <img class="w-full h-auto" src="{% static 'photos/template_announcement.png' %}"/>
+            </div>
+        </div>
+</body>
+
+<script src="{% static 'js/crudProduct.js' %}"></script>

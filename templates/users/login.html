@@ -1,5 +1,6 @@
 <body>
     {% include 'partials/_header.html' %}
+    
     <div class="pt-48 pb-48">
         <div class="container px-3 mx-auto flex flex-wrap flex-row items-center">
             <div class="flex md:w-full h-96 justify-center items-center md:text-left ">
@@ -37,6 +38,9 @@
                             <div class="mt-8 text-center">
                                 <span>Ainda não tem conta?</span>
                                 <button type="button" class="text-blue-700" onclick="exibirCriarConta()">Clique aqui</button>
+                            </div>
+                            <div class="mt-6">
+                                {% include 'partials/_alerts.html' %}
                             </div>
                         </div>
                     </div>

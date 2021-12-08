@@ -1,6 +1,7 @@
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
+from django.contrib import messages
 from products.models import Cart_Products, Products
 
 def index(request):
@@ -42,7 +43,7 @@ def create_product(request):
         if reasons_to_buy == '':
             return render(request, 'products/create-product.html')
         photo = request.FILES['photo']
-        print(reasons_to_buy)
+
         product = Products.objects.create(
             product_owner = product_owner,
             name = name,
@@ -121,19 +122,16 @@ def confirmed_purchase(request, product_id, user_id):
         buy_quantity = int(request.POST['buy_quantity'])
 
     if product.product_owner_id == user_id:
-        #mensagem de erro dizendo que a pessoa já é dona do produto
-        print("erro dono")
+        messages.error(request, "Você já é dono do produto.")
         return redirect('buy_product', product_id, buy_quantity)
     if buyer.client.fund < product.price:
-        print("Erro preço")
-        #messagem de erro dizendo que a pessoa n tem dinheiro suficiente para compra
+        messages.error(request, "Você não possui dinheiro suficiente para comprar esse produto.")
         return redirect('buy_product', product_id, buy_quantity)
     if product.sold:
-        print("erro vendido")
-        #messagem de erro dizendo que o produto já está vendido
+        messages.error(request, "Esse produto já foi vendido.")
         return redirect('buy_product', product_id, buy_quantity)
     if product.quantity < buy_quantity:
-        print("Erro de quantidade")
+        messages.error(request, "Você está tentando comprar uma quantidade maior do que a disponível.")
         return redirect('buy_product', product_id, buy_quantity)
 
     #transferência
@@ -164,14 +162,13 @@ def cancel_purchase(request, product_id):
     return redirect('product_page', product_id)
 
 def add_cart(request, product_id, user_id):
-    """Adiciona um produto no carrinho do usuário, caso exista"""
-    #verificar se o produto já existe, caso exista não adicionar dois produtos iguaiss
+    """Adiciona um produto no carrinho do usuário, caso já não exista"""
     if user_id == Products.objects.get(id=product_id).product_owner_id:
-        #Erro de dono querendo botar seu próprio produto no carrinho
-       return redirect('index')
+        messages.error(request, "O produto que quer adicionar já é seu.")
+        return redirect('product_page', product_id)
     if Cart_Products.objects.filter(buyer_id=user_id, product_id=product_id):
-        #erro de querer adicionar um produto que já existe no carrinho
-        return redirect('index')
+        messages.error(request, "O produto já existe no seu carrinho")
+        return redirect('product_page', product_id)
     Cart_Products.objects.create(buyer_id=user_id, product_id=product_id)
     return redirect('products_in_cart', user_id)
 
