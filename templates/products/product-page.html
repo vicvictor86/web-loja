@@ -16,7 +16,7 @@
         
         <div style="display: flex;" class="container mt-16">
           <div>
-            <a type="button" style="background: #006eb5; border-radius: 4px; display: flex; flex-direction: row; justify-content: center; align-items: center; width: 150px; padding: 4px 16px; color: white; font-style: italic;" href="http://localhost:8000/">Página principal</a>
+            <a type="button" style="background: #006eb5; border-radius: 4px; display: flex; flex-direction: row; justify-content: center; align-items: center; width: 150px; padding: 4px 16px; color: white; font-style: italic;" href="{% url 'index' %}">Página principal</a>
           </div>
           <div class="col-3 text--center">
             <img src="{{ product.photo.url }}" alt="Foto do produto" class="details-img--ball" />
